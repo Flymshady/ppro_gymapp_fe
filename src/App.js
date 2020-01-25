@@ -5,7 +5,7 @@ import TicketPage from './pages/TicketPage';
 import {CoursePage} from './pages/CoursePage';
 import {NoMatchPage} from './pages/NoMatchPage';
 import './styles/App.css';
-import {NavigationBar} from "./components/layout/NavigationBar";
+import NavigationBar from "./components/layout/NavigationBar";
 import {Layout} from "./components/layout/Layout";
 import SideBar from "./components/layout/SideBar";
 import CreateTicketPage from "./pages/CreateTicketPage";
