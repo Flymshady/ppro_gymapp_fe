@@ -12,5 +12,7 @@ export const getRolesUrl = 'http://localhost:8080/roles/all';
 
 export const getloginUrl = 'http://localhost:8080/basicauth';
 
-export const postloginUrl = 'http://localhost:8080/authenticate';
+//export const getCurrentUser = 'http://localhost:8080/current';
+
+export const getUserRoleUrl = 'http://localhost:8080/accounts/role';
 

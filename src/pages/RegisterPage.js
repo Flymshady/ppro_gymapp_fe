@@ -27,7 +27,7 @@ class RegisterPage extends Component {
             .then((response) => response.json())
             .then((jsonResponse) => {
                 this.setState({roles: jsonResponse})
-                console.log("response: " + jsonResponse)
+                //console.log("response: " + jsonResponse)
             }).catch((err) => console.error(err));
     }
 
@@ -62,10 +62,13 @@ class RegisterPage extends Component {
                 'Content-Type': 'application/json',
                 'Access-Control-Allow-Credentials': true,
                 'Access-Control-Allow-Origin': 'http://localhost:3000'
+                /*'authorization': AuthenticationService.createBasicAuthToken
+                (sessionStorage.getItem(USER_NAME_SESSION_ATTRIBUTE_NAME),
+                    sessionStorage.getItem(USER_NAME_SESSION_ATTRIBUTE_PASSWORD))*/
             },
             body: json
         }).then(function (response) {
-            console.log(json)
+            console.log(response)
             return response.text();
         }).then(function (text) {
             //console.log(text)
@@ -75,31 +78,31 @@ class RegisterPage extends Component {
     }
 
     render() {
-        return(
+        return (
             <Form onSubmit={this.handleSubmit}>
                 <Form.Group controlId="formBasicEmail">
                     <Form.Label>Jméno</Form.Label>
-                    <Form.Control name="firstName" type="text" placeholder="Vaše jméno" required />
+                    <Form.Control name="firstName" type="text" placeholder="Vaše jméno" required/>
                 </Form.Group>
 
                 <Form.Group controlId="formBasicEmail">
                     <Form.Label>Přijmení</Form.Label>
-                    <Form.Control name="lastName" type="text" placeholder="Vaše přijmení" required />
+                    <Form.Control name="lastName" type="text" placeholder="Vaše přijmení" required/>
                 </Form.Group>
 
                 <Form.Group controlId="formBasicEmail">
                     <Form.Label>Login</Form.Label>
-                    <Form.Control name="login" type="text" placeholder="Váš login" required />
+                    <Form.Control name="login" type="text" placeholder="Váš login" required/>
                 </Form.Group>
 
                 <Form.Group controlId="formBasicEmail">
                     <Form.Label>Heslo</Form.Label>
-                    <Form.Control name="password" type="password" placeholder="Zadejte Vaše heslo" required />
+                    <Form.Control name="password" type="password" placeholder="Zadejte Vaše heslo" required/>
                 </Form.Group>
 
                 <Form.Group controlId="formBasicEmail">
                     <Form.Label>Email</Form.Label>
-                    <Form.Control name="email" type="email" placeholder="Zadejte Váš email" required />
+                    <Form.Control name="email" type="email" placeholder="Zadejte Váš email" required/>
                     <Form.Text className="text-muted">
                         Váš e-mail nikdy nebudeme sdílet s nikým jiným.
                     </Form.Text>
@@ -107,7 +110,7 @@ class RegisterPage extends Component {
 
                 <Form.Group controlId="formBasicEmail">
                     <Form.Label>Telefonní číslo</Form.Label>
-                    <Form.Control name="phoneNumber" type="number" placeholder="Zadejte Vaše heslo" required />
+                    <Form.Control name="phoneNumber" type="number" placeholder="Zadejte Vaše heslo" required/>
                 </Form.Group>
 
                 <Form.Group>

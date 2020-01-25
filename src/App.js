@@ -14,6 +14,7 @@ import CreateRole from "./pages/CreateRole";
 import AuthenticatedRoute from "./components/authentication/AuthenticationRoute";
 import LoginPage from "./pages/LoginPage";
 import LogoutComponent from "./components/authentication/LogoutComponent";
+import AuthRouteAdmin from "./components/authentication/AuthRouteAdmin";
 
 class App extends Component {
     render() {
@@ -26,13 +27,13 @@ class App extends Component {
                     <Layout>
                         <Switch>
                             <Route exact path="/" component={HomePage}/>
+                            <Route exact path="/account/create" component={RegisterPage}/>
                             <Route path="/login" component={LoginPage} />
                             <AuthenticatedRoute path="/logout" exact component={LogoutComponent} />
-                            <Route exact path="/ticket" component={TicketPage}/>
-                            <Route exact path="/account/create" component={RegisterPage}/>
-                            <AuthenticatedRoute exact path="/role/create" component={CreateRole}/>
+                            <AuthenticatedRoute exact path="/ticket" component={TicketPage}/>
+                            <AuthRouteAdmin  exact path="/role/create" component={CreateRole}/>
                             <Route path="/course" component={CoursePage}/>
-                            <Route path="/ticket/create" component={CreateTicketPage}/>
+                            <AuthenticatedRoute path="/ticket/create" component={CreateTicketPage}/>
                             <Route component={NoMatchPage}/>
                         </Switch>
                     </Layout>
