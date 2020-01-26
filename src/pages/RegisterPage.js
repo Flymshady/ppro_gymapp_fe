@@ -8,10 +8,10 @@ class RegisterPage extends Component {
     constructor(props) {
         super(props);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleChange = this.handleChange.bind(this);
         this.state = {
             roles: [],
             role: '',
-            roleName: '',
         };
     }
 
@@ -32,7 +32,6 @@ class RegisterPage extends Component {
     }
 
     handleChange = (event) => {
-        this.setState({roleName: event.target.value});
     }
 
     handleSubmit(event) {
@@ -49,14 +48,15 @@ class RegisterPage extends Component {
             //data.set("roleName", "{" + roleName + "}");
         }*/
 
-        console.log(this.state.roleName)
+        const roleName = data.get("roleName");
+
 
         /*for (let pair of data.entries()) {
             console.log(pair[0] + "," + pair[1])
         }*/
         let json = JSON.stringify(object);
 
-        fetch(createAccountUrl + this.state.roleName, {
+        fetch(createAccountUrl + roleName, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -68,8 +68,11 @@ class RegisterPage extends Component {
             },
             body: json
         }).then(function (response) {
-            console.log(response)
-            return response.text();
+            if(response.ok) {
+                alert("Účet byl vytvořen");
+            } else {
+                alert("Účet se nepodařilo vytvořit");
+            }
         }).then(function (text) {
             //console.log(text)
         }).catch(function (error) {
@@ -115,7 +118,7 @@ class RegisterPage extends Component {
 
                 <Form.Group>
                     <Form.Label>Role</Form.Label>
-                    <Form.Control name="roleName" as="select" onChange={this.handleChange} required>
+                    <Form.Control name="roleName" as="select" required>
                         {this.state.roles.map((role, index) => {
                             return (
                                 <option key={index}>{role.name}</option>

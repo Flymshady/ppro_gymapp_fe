@@ -15,6 +15,7 @@ import AuthenticatedRoute from "./components/authentication/AuthenticationRoute"
 import LoginPage from "./pages/LoginPage";
 import LogoutComponent from "./components/authentication/LogoutComponent";
 import AuthRouteAdmin from "./components/authentication/AuthRouteAdmin";
+import CreateCoursePage from "./pages/CreateCoursePage";
 
 class App extends Component {
     render() {
@@ -32,7 +33,8 @@ class App extends Component {
                             <AuthenticatedRoute path="/logout" exact component={LogoutComponent} />
                             <AuthenticatedRoute exact path="/ticket" component={TicketPage}/>
                             <AuthRouteAdmin  exact path="/role/create" component={CreateRole}/>
-                            <Route path="/course" component={CoursePage}/>
+                            <Route exact path="/course" component={CoursePage}/>
+                            <AuthenticatedRoute exact path="/course/create" component={CreateCoursePage}/>
                             <AuthenticatedRoute path="/ticket/create" component={CreateTicketPage}/>
                             <Route component={NoMatchPage}/>
                         </Switch>
