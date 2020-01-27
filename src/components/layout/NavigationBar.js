@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { Link } from 'react-router-dom';
+import {Link, withRouter} from 'react-router-dom';
 import { Nav, Navbar } from 'react-bootstrap';
 import styled from 'styled-components';
 import '../../styles/NavigationBar.css';
@@ -16,6 +16,13 @@ const Styles = styled.div`
 
 class NavigationBar extends Component {
 
+    constructor(props) {
+        super(props);
+        this.state = {
+            isUserLoggedIn : ""
+        };
+    }
+
     render() {
         const isUserLoggedIn = AuthenticationService.isUserLoggedIn();
         return(
@@ -29,8 +36,8 @@ class NavigationBar extends Component {
                                     <Link className="btn btn-outline-light" to="#">Registrace</Link>
                                 </Nav.Link>
                             </Nav.Item>
-                            {!isUserLoggedIn && <Nav.Link>><Link className="btn btn-outline-light" to="/login">Přihlásit se</Link></Nav.Link>}
-                            {isUserLoggedIn && <Nav.Link><Link className="btn btn-outline-light" to="/logout" onClick={AuthenticationService.logout}>Odhlásit se</Link></Nav.Link>}
+                            {!isUserLoggedIn && <Nav.Link>><Link  className="btn btn-outline-light" to="/login">Přihlásit se</Link></Nav.Link>}
+                            {isUserLoggedIn && <Nav.Link><Link  className="btn btn-outline-light" to="/logout" onClick={AuthenticationService.logout}>Odhlásit se</Link></Nav.Link>}
                         </Nav>
                     </Navbar.Collapse>
                 </Navbar>
@@ -40,4 +47,4 @@ class NavigationBar extends Component {
 
 }
 
-export default NavigationBar;
+export default withRouter(NavigationBar);

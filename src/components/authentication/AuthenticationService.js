@@ -1,25 +1,33 @@
 import axios from 'axios'
-import {getloginUrl, postloginUrl} from "../../constants";
+import {getloginUrl} from "../../constants";
 
-export const USER_NAME_SESSION_ATTRIBUTE_NAME = 'authenticatedUser'
+export const USER_NAME_SESSION_ATTRIBUTE_NAME = 'authenticatedUser';
+
+export const USER_NAME_SESSION_ATTRIBUTE_PASSWORD = 'UserPassword';
+
+export const USER_NAME_SESSION_ATTRIBUTE_ROLE = 'UserRole';
 
 class AuthenticationService {
 
 
-
     executeBasicAuthenticationService(username, password) {
 
+        let role = '';
+
         return axios.get(`${getloginUrl}`,
-            { headers: { authorization: this.createBasicAuthToken(username, password)} })
+            { headers: { authorization: this.createBasicAuthToken(username, password),
+                    "Access-Control-Allow-Origin":"http://localhost:3000"} })
+            .then((response) => {{role = response.data}})
+            .then(() => {sessionStorage.setItem(USER_NAME_SESSION_ATTRIBUTE_ROLE, role)})
     }
 
-    executeJwtAuthenticationService(username, password) {
+    /*executeJwtAuthenticationService(username, password) {
         console.log(username);
         return axios.post(`${postloginUrl}`, {
             username,
             password
         })
-    }
+    }*/
 
     createBasicAuthToken(username, password) {
         return 'Basic ' + window.btoa(username + ":" + password)
@@ -29,6 +37,7 @@ class AuthenticationService {
         //let basicAuthHeader = 'Basic ' +  window.btoa(username + ":" + password)
         //console.log('registerSuccessfulLogin')
         sessionStorage.setItem(USER_NAME_SESSION_ATTRIBUTE_NAME, username)
+        sessionStorage.setItem(USER_NAME_SESSION_ATTRIBUTE_PASSWORD, password)
         this.setupAxiosInterceptors(this.createBasicAuthToken(username, password))
     }
 
@@ -44,6 +53,8 @@ class AuthenticationService {
 
     logout() {
         sessionStorage.removeItem(USER_NAME_SESSION_ATTRIBUTE_NAME);
+        sessionStorage.removeItem(USER_NAME_SESSION_ATTRIBUTE_PASSWORD);
+        sessionStorage.removeItem(USER_NAME_SESSION_ATTRIBUTE_ROLE);
     }
 
     isUserLoggedIn() {

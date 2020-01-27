@@ -2,13 +2,46 @@ import React, {Component} from 'react';
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import '../styles/Forms.css'
-import {createCourseUrl} from '../constants/index';
+import {createCourseUrl, getAllTrainers} from '../constants/index';
 
-class CreateTicketPage extends Component {
+class CreateCoursePage extends Component {
 
     constructor(props) {
         super(props);
+        this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.state = {
+            trainers : [],
+            trainerId : '',
+            name: '',
+            description: '',
+            price: '',
+            maxCapacity : '',
+            beginDate : '',
+            endDate : '',
+            count : ''
+        }
+    }
+
+    componentDidMount() {
+        fetch(getAllTrainers, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Credentials': true,
+                'Access-Control-Allow-Origin': 'http://localhost:3000'
+            }
+        })
+            .then((response) => response.json())
+            .then((jsonResponse) => {
+                this.setState({trainers: jsonResponse})
+                this.setState({trainerId : jsonResponse[0].id});
+                console.log("response: " + jsonResponse)
+            }).catch((err) => console.error(err));
+    }
+
+    handleChange = (event) => {
+        this.setState({[event.target.id]: event.target.value});
     }
 
     handleSubmit(event) {
@@ -21,17 +54,24 @@ class CreateTicketPage extends Component {
         });
         let json = JSON.stringify(object);
 
-        fetch(createCourseUrl, {
+        const trainerId = data.get("trainerId");
+
+        console.log(data.get("trainerId"))
+
+        fetch(createCourseUrl + trainerId, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'Access-Control-Allow-Credentials': true,
-                'Access-Control-Allow-Origin': 'http://localhost:3000'
+                'Access-Control-Allow-Origin': '*'
             },
             body: json
         }).then(function (response) {
-            console.log(json)
-            return response.text();
+            if(response.ok) {
+                alert("Kurz byl vytvořen");
+            } else {
+                alert("Kurz se nepodařilo vytvořit");
+            }
         }).then(function (text) {
             console.log(text)
         }).catch(function (error) {
@@ -43,27 +83,27 @@ class CreateTicketPage extends Component {
     render() {
         return(
             <Form className="forms" onSubmit={this.handleSubmit}>
-                <Form.Group>
+                <Form.Group controlId="formBasicEmail">
                     <Form.Label>Název</Form.Label>
                     <Form.Control name="name" type="text" placeholder="Název kurzu" required />
                 </Form.Group>
 
-                <Form.Group>
+                <Form.Group controlId="formBasicEmail">
                     <Form.Label>Popis</Form.Label>
                     <Form.Control name="description" type="text" placeholder="Popis kurzu" required />
                 </Form.Group>
 
-                <Form.Group>
+                <Form.Group controlId="formBasicEmail">
                     <Form.Label>Cena</Form.Label>
                     <Form.Control name="price" type="number" placeholder="Cena kurzu" required />
                 </Form.Group>
 
-                <Form.Group>
+                <Form.Group controlId="formBasicEmail">
                     <Form.Label>Kapacita</Form.Label>
                     <Form.Control name="maxCapacity" type="number" placeholder="Kapacita kurzu" required />
                 </Form.Group>
 
-                <Form.Group>
+                <Form.Group controlId="formBasicEmail">
                     <Form.Label>Začátek kurzu</Form.Label>
                     <Form.Control name="beginDate" type="date" placeholder="Datum a čas začátku kurzu" required />
                     <Form.Text className="text-muted">
@@ -71,20 +111,25 @@ class CreateTicketPage extends Component {
                     </Form.Text>
                 </Form.Group>
 
-                <Form.Group>
+                <Form.Group controlId="formBasicEmail">
                     <Form.Label>Konec kurzu</Form.Label>
-                    <Form.Control name="beginDate" type="text" placeholder="Datum konce kurzu" required />
+                    <Form.Control name="endDate" type="text" placeholder="Datum konce kurzu" required />
                     <Form.Text className="text-muted">
                         Zadejte ve formátu YYYY-MM-DD
                     </Form.Text>
                 </Form.Group>
 
+                <Form.Group controlId="formBasicEmail">
+                    <Form.Label>Počet konání</Form.Label>
+                    <Form.Control name="count" type="number" placeholder="Počet konání" required />
+                </Form.Group>
+
                 <Form.Group>
                     <Form.Label>Výběr trenéra</Form.Label>
-                    <Form.Control name="trainer" as="select">
-                        {this.state.ticketType.map((type, index) => {
+                    <Form.Control name="trainerId" as="select" onChange={this.handleChange} required>
+                        {this.state.trainers.map((trainer, index) => {
                             return (
-                                <option key={index}>{type}</option>
+                                <option key={index} value={trainer.id}>{trainer.firstName} {trainer.lastName}</option>
                             )
                         })}
                     </Form.Control>
@@ -99,4 +144,4 @@ class CreateTicketPage extends Component {
     }
 }
 
-export default CreateTicketPage;
+export default CreateCoursePage;

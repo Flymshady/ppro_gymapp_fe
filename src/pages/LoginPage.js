@@ -9,6 +9,7 @@ class LoginComponent extends Component {
         this.state = {
             username: '',
             password: '',
+            role : '',
             hasLoginFailed: false,
             showSuccessMessage: false
         }
@@ -27,18 +28,6 @@ class LoginComponent extends Component {
     }
 
     loginClicked() {
-        //in28minutes,dummy
-        // if(this.state.username==='in28minutes' && this.state.password==='dummy'){
-        //     AuthenticationService.registerSuccessfulLogin(this.state.username,this.state.password)
-        //     this.props.history.push(`/courses`)
-        //     //this.setState({showSuccessMessage:true})
-        //     //this.setState({hasLoginFailed:false})
-        // }
-        // else {
-        //     this.setState({showSuccessMessage:false})
-        //     this.setState({hasLoginFailed:true})
-        // }
-
         AuthenticationService
             .executeBasicAuthenticationService(this.state.username, this.state.password)
             .then(() => {
