@@ -12,7 +12,14 @@ class CreateCoursePage extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.state = {
             trainers : [],
-            trainerId : ''
+            trainerId : '',
+            name: '',
+            description: '',
+            price: '',
+            maxCapacity : '',
+            beginDate : '',
+            endDate : '',
+            count : ''
         }
     }
 
@@ -34,8 +41,7 @@ class CreateCoursePage extends Component {
     }
 
     handleChange = (event) => {
-        this.setState({trainerId: event.target.value});
-        console.log(this.state.trainerId)
+        this.setState({[event.target.id]: event.target.value});
     }
 
     handleSubmit(event) {
@@ -50,12 +56,14 @@ class CreateCoursePage extends Component {
 
         const trainerId = data.get("trainerId");
 
+        console.log(data.get("trainerId"))
+
         fetch(createCourseUrl + trainerId, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'Access-Control-Allow-Credentials': true,
-                'Access-Control-Allow-Origin': 'http://localhost:3000'
+                'Access-Control-Allow-Origin': '*'
             },
             body: json
         }).then(function (response) {
