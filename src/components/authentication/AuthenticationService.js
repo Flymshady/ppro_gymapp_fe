@@ -16,7 +16,7 @@ class AuthenticationService {
 
         return axios.get(`${getloginUrl}`,
             { headers: { authorization: this.createBasicAuthToken(username, password),
-                    "Access-Control-Allow-Origin":"http://localhost:3000"} })
+                    "Access-Control-Allow-Origin":"*"} })
             .then((response) => {{role = response.data}})
             .then(() => {sessionStorage.setItem(USER_NAME_SESSION_ATTRIBUTE_ROLE, role)})
     }

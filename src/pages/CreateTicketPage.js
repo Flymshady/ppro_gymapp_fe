@@ -42,6 +42,7 @@ class CreateTicketPage extends Component {
         const data = new FormData(event.target);
 
         let object = {};
+
         data.forEach(function (value, key) {
             object[key] = value;
         });
@@ -52,7 +53,7 @@ class CreateTicketPage extends Component {
             headers: {
                 'Content-Type': 'application/json',
                 'Access-Control-Allow-Credentials': true,
-                'Access-Control-Allow-Origin': 'http://localhost:3000'
+                'Access-Control-Allow-Origin': 'http://localhost:3000',
             },
             body: json
         }).then(function (response) {

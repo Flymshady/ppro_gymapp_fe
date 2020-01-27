@@ -1,4 +1,6 @@
-export const ticketUrl = 'http://localhost:8080/tickets/all';
+export const getTicketsUrl = 'http://localhost:8080/tickets/all';
+
+export const getCoursesUrl = 'http://localhost:8080/courses/all';
 
 export const createTicketUrl = 'http://localhost:8080/tickets/create';
 

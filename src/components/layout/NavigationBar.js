@@ -33,7 +33,7 @@ class NavigationBar extends Component {
                         <Nav className="ml-auto">
                             <Nav.Item>
                                 <Nav.Link>
-                                    <Link className="btn btn-outline-light" to="#">Registrace</Link>
+                                    <Link className="btn btn-outline-light" to="/account/create">Registrace</Link>
                                 </Nav.Link>
                             </Nav.Item>
                             {!isUserLoggedIn && <Nav.Link>><Link  className="btn btn-outline-light" to="/login">Přihlásit se</Link></Nav.Link>}

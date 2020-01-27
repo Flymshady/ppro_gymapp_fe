@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import '../../styles/Table.css';
 
-class TicketPage extends Component {
+class TicketsData extends Component {
 
     header = ["Název", "Datum nákupu", "Datum vypršení", "Platnost", "Typ"];
 
@@ -14,7 +14,7 @@ class TicketPage extends Component {
     }
 
     renderTableData() {
-        return this.props.ticketData.map((ticket, index) => {
+        return this.props.ticketsData.map((ticket, index) => {
             const { id, name, beginDate, endDate, valid, ticketType } = ticket;
             let validString = "";
             if (valid === true) validString = "Platná";
@@ -32,8 +32,8 @@ class TicketPage extends Component {
     }
 
     render() {
-        console.log("Data: " + this.props.ticketData);
-        if (this.props.ticketData.length === 0) {
+        console.log("Data: " + this.props.ticketsData);
+        if (this.props.ticketsData.length === 0) {
             return <p className="text-danger">Nemáte žádné permanentky</p>;
         } else {
             return (
@@ -50,4 +50,4 @@ class TicketPage extends Component {
     }
 }
 
-export default TicketPage;
+export default TicketsData;
