@@ -1,11 +1,12 @@
 import React, {Component} from 'react';
-import '../styles/Table.css';
-import {getCourseDetailUrl, removeCourseUrl, signCourseUrl} from "../constants";
+import '../../styles/Table.css';
+import {getCourseDetailUrl, removeCourseUrl, signCourseUrl} from "../../constants";
 import AuthenticationService, {
     USER_NAME_SESSION_ATTRIBUTE_NAME, USER_NAME_SESSION_ATTRIBUTE_PASSWORD,
     USER_NAME_SESSION_ATTRIBUTE_ROLE
-} from "../components/authentication/AuthenticationService";
+} from "../../components/authentication/AuthenticationService";
 import Button from "react-bootstrap/Button";
+import {Link} from "react-router-dom";
 
 class CourseDetailPage extends Component {
 
@@ -165,7 +166,7 @@ class CourseDetailPage extends Component {
                                     </table>
                                     {isTrainer &&
                                     <div>
-                                        <a href="#" className="btn btn-secondary">Upravit</a>
+                                        <Link to={{pathname : '/course/update/' + this.props.match.params.id , courseData : coursesData}} className="btn btn-secondary">Upravit</Link>
                                         <Button onClick={this.handleDelete} className="btn btn-danger">Smazat</Button>
                                     </div>}
                                     {canSignedCourse && <Button onClick={this.handleSigned} className="btn btn-primary">

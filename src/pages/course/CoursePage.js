@@ -1,11 +1,11 @@
 import React, {Component} from 'react';
-import {getCoursesUrl} from "../constants";
-import CoursesData from "../components/courses/CoursesData";
+import CoursesData from "../../components/courses/CoursesData";
 import Loader from 'react-loader-spinner'
-import {
-    USER_NAME_SESSION_ATTRIBUTE_NAME
-} from "../components/authentication/AuthenticationService";
-import CoursesDataTrainer from "../components/courses/CourseDataTrainer";
+import AuthenticationService, {
+    USER_NAME_SESSION_ATTRIBUTE_NAME, USER_NAME_SESSION_ATTRIBUTE_PASSWORD
+} from "../../components/authentication/AuthenticationService";
+import CoursesDataTrainer from "../../components/courses/CourseDataTrainer";
+import {getCoursesUrl} from "../../constants";
 
 class CoursePage extends Component {
 
@@ -20,12 +20,14 @@ class CoursePage extends Component {
     }
 
     componentDidMount() {
+
         fetch(getCoursesUrl, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
                 'Access-Control-Allow-Credentials': true,
-                'Access-Control-Allow-Origin': '*'
+                'Access-Control-Allow-Origin': '*',
+                'authorization' : AuthenticationService.createBasicAuthToken(sessionStorage.getItem(USER_NAME_SESSION_ATTRIBUTE_NAME), sessionStorage.getItem(USER_NAME_SESSION_ATTRIBUTE_PASSWORD))
             }
         })
             .then((response) => response.json())

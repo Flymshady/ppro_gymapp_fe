@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
-import TicketsData from '../components/tickets/TicketsData';
-import {getTicketsUrl} from '../constants/index';
-import '../styles/Table.css'
+import TicketsData from '../../components/tickets/TicketsData';
+import {getTicketsUrl} from '../../constants';
+import '../../styles/Table.css'
 import Loader from "react-loader-spinner";
 
 class TicketPage extends Component {
