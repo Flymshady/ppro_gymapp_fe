@@ -60,28 +60,11 @@ class UpdateCoursePage extends Component {
 
     handleChange = (event) => {
         this.setState({[event.target.id]: event.target.value});
-    }
+    };
 
-    handleSubmit(event) {
-        event.preventDefault();
-        const data = new FormData(event.target);
+    handleChangeTrainerId = (event) => {
 
-        let trainer_id = data.get('trainerId');
-        //console.log("id" + " " + trainer_id);
-
-        let trainer = {
-            id: "",
-                firstName: "",
-                lastName: "",
-                login: "",
-                password: "",
-                email: "",
-                phoneNumber: "",
-                role : {id: "", name : "", accounts: []}
-
-        };
-
-        fetch(getAccountDetailUrl + trainer_id, {
+        fetch(getAccountDetailUrl + event.target.value, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -91,22 +74,25 @@ class UpdateCoursePage extends Component {
         })
             .then((response) => response.json())
             .then((jsonResponse) => {
-                trainer = jsonResponse;
-                console.log(jsonResponse)
+                this.setState({trainer : jsonResponse})
             }).catch((err) => console.error(err));
+    }
 
-        console.log(trainer);
+    handleSubmit(event) {
+        event.preventDefault();
+        const data = new FormData(event.target);
+
+        data.delete('trainerId');
 
         let object = {};
         data.forEach(function (value, key) {
             object[key] = value;
         });
+
         // pripojit trenera k jsonovi
-        object["trainer"] = trainer;
+        object["trainer"] = this.state.trainer;
         let json = JSON.stringify(object);
         console.log(json);
-
-
 
         fetch(updateCourseUrl + this.props.match.params.id, {
             method: 'PUT',
@@ -127,7 +113,6 @@ class UpdateCoursePage extends Component {
             console.error(error)
         });
     }
-
 
     render() {
         return (
@@ -176,7 +161,7 @@ class UpdateCoursePage extends Component {
 
                 <Form.Group>
                     <Form.Label>Výběr trenéra</Form.Label>
-                    <Form.Control defaultValue={this.state.trainer.id} name="trainer" as="select" onChange={this.handleChange} required>
+                    <Form.Control defaultValue={this.state.trainer.id} name="trainerId" as="select" onChange={this.handleChangeTrainerId} required>
                         {this.state.trainers.map((trainer, index) => {
                             return (
                                 <option key={index} value={trainer.id}>{trainer.firstName} {trainer.lastName}</option>

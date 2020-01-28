@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import '../../styles/Table.css';
+import '../../styles/Detail.css';
 import {getCourseDetailUrl, removeCourseUrl, signCourseUrl} from "../../constants";
 import AuthenticationService, {
     USER_NAME_SESSION_ATTRIBUTE_NAME, USER_NAME_SESSION_ATTRIBUTE_PASSWORD,
@@ -166,9 +167,10 @@ class CourseDetailPage extends Component {
                                     </table>
                                     {isTrainer &&
                                     <div>
-                                        <Link to={{pathname : '/course/update/' + this.props.match.params.id , courseData : coursesData}} className="btn btn-secondary">Upravit</Link>
-                                        <Button onClick={this.handleDelete} className="btn btn-danger">Smazat</Button>
-                                    </div>}
+                                    <div className="text-center">
+                                        <Link to={{pathname : '/course/update/' + this.props.match.params.id , courseData : coursesData}} className="btn btn-secondary btn-space">Upravit</Link>
+                                        <Button onClick={this.handleDelete} className="btn btn-danger btn-space">Smazat</Button>
+                                    </div></div>}
                                     {canSignedCourse && <Button onClick={this.handleSigned} className="btn btn-primary">
                                         Přihlásit se na kurz</Button>}
                                     {isUnauthorised &&

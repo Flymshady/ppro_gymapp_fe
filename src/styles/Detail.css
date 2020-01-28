@@ -3,6 +3,10 @@
     border : 2px solid black;
 }
 
+.btn-space {
+    margin-right: 5px;
+}
+
 .user-row {
     margin-bottom: 14px;
 }
