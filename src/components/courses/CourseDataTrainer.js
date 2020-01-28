@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import '../../styles/Table.css';
+import {Link} from "react-router-dom";
 
 class CoursesDataTrainer extends Component {
 
@@ -15,10 +16,14 @@ class CoursesDataTrainer extends Component {
 
     renderTableDataCourses() {
         return this.props.courses.map((course, index) => {
-            const { name, beginDate, endDate, count, trainer, price, maxCapacity } = course;
+            const { id, name, beginDate, endDate, count, trainer, price, maxCapacity } = course;
+            const newTo = {
+                pathname: "/course/detail/" + id,
+                courseName: name
+            };
             return (
                 <tr key={index}>
-                    <td>{name}</td>
+                    <td><Link to={newTo}>{name}</Link></td>
                     <td>{beginDate}</td>
                     <td>{endDate}</td>
                     <td>{count}</td>
@@ -32,10 +37,14 @@ class CoursesDataTrainer extends Component {
 
     renderTableDataCoursesTrainer() {
         return this.props.coursesTrainer.map((course, index) => {
-            const { name, beginDate, endDate, count, trainer, price, maxCapacity } = course;
+            const { id, name, beginDate, endDate, count, trainer, price, maxCapacity } = course;
+            const newTo = {
+                pathname: "/course/detail/" + id,
+                courseName: name
+            };
             return (
                 <tr key={index}>
-                    <td>{name}</td>
+                    <td><Link to={newTo}>{name}</Link></td>
                     <td>{beginDate}</td>
                     <td>{endDate}</td>
                     <td>{count}</td>

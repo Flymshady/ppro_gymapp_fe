@@ -1,6 +1,11 @@
 import React, {Component} from 'react';
 import '../styles/Table.css';
-import {getCourseDetailUrl} from "../constants";
+import {getCourseDetailUrl, removeCourseUrl, signCourseUrl} from "../constants";
+import AuthenticationService, {
+    USER_NAME_SESSION_ATTRIBUTE_NAME, USER_NAME_SESSION_ATTRIBUTE_PASSWORD,
+    USER_NAME_SESSION_ATTRIBUTE_ROLE
+} from "../components/authentication/AuthenticationService";
+import Button from "react-bootstrap/Button";
 
 class CourseDetailPage extends Component {
 
@@ -10,12 +15,37 @@ class CourseDetailPage extends Component {
             courseData: [],
             loading: true,
             trainer: {},
-            accountSignedCourses: []
+            accountSignedCourses: [],
+            isTrainer: false,
+            canSignedCourse: false,
+            isUnauthorised: false,
+            role: "",
+            actualDateTime : {}
         };
     }
 
     componentDidMount() {
         console.log("ID: " + this.props.match.params.id)
+
+        this.setState({actualDateTime : new Date()});
+
+        const role = sessionStorage.getItem(USER_NAME_SESSION_ATTRIBUTE_ROLE);
+        this.setState({role: role});
+        if (role === '[ROLE_Trainer]') {
+            this.setState({isTrainer: true})
+        } else {
+            this.setState({isTrainer: false})
+        }
+        if (role === '[ROLE_Client]') {
+            this.setState({canSignedCourse: true})
+        } else {
+            this.setState({canSignedCourse: false})
+        }
+        if (role === null) {
+            this.setState({isUnauthorised: true})
+        } else {
+            this.setState({isUnauthorised: false})
+        }
 
         fetch(getCourseDetailUrl + this.props.match.params.id, {
             method: 'GET',
@@ -33,10 +63,56 @@ class CourseDetailPage extends Component {
             }).catch((err) => console.error(err));
     }
 
+    handleSigned = (event) => {
+        let json = JSON.stringify(this.state.actualDateTime);
+        console.log(this.state.actualDateTime);
+
+        fetch(signCourseUrl + this.props.match.params.id, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Credentials': true,
+                'Access-Control-Allow-Origin': '*',
+                'authorization' : AuthenticationService.createBasicAuthToken(sessionStorage
+                    .getItem(USER_NAME_SESSION_ATTRIBUTE_NAME), sessionStorage
+                    .getItem(USER_NAME_SESSION_ATTRIBUTE_PASSWORD))
+            },
+            body: json
+        }).then(function (response) {
+            if(response.ok) {
+                alert("Kurz byl zapsán");
+            } else {
+                alert("Kurz se nepodařilo zapsat");
+            }
+        }).then(function (text) {
+        }).catch(function (error) {
+            console.error(error)
+        });
+
+    }
+
+    handleDelete = (event) => {
+        fetch(removeCourseUrl + this.props.match.params.id, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Credentials': true,
+                'Access-Control-Allow-Origin': '*'
+            }
+        })
+            .then((response) => response.json())
+            .then((jsonResponse) => {
+                console.log(jsonResponse)
+            }).catch((err) => console.error(err));
+
+        this.props.history.push('/course')
+    }
+
     render() {
         const coursesData = this.state.courseData;
         const {firstName, lastName} = this.state.trainer;
         const occupancy = this.state.accountSignedCourses.length;
+        const {isTrainer, canSignedCourse, isUnauthorised} = this.state;
 
         return (
             <div className="container text-center">
@@ -87,9 +163,15 @@ class CourseDetailPage extends Component {
                                         </tr>
                                         </tbody>
                                     </table>
-
-                                    <a href="#" class="btn btn-primary">Upravit</a>
-                                    <a href="#" class="btn btn-danger">Smazat</a>
+                                    {isTrainer &&
+                                    <div>
+                                        <a href="#" className="btn btn-secondary">Upravit</a>
+                                        <Button onClick={this.handleDelete} className="btn btn-danger">Smazat</Button>
+                                    </div>}
+                                    {canSignedCourse && <Button onClick={this.handleSigned} className="btn btn-primary">
+                                        Přihlásit se na kurz</Button>}
+                                    {isUnauthorised &&
+                                    <a href="/login" className="btn btn-primary">Přihlásit se na kurz</a>}
                                 </div>
                             </div>
                         </div>

@@ -36,7 +36,7 @@ class App extends Component {
                             <AuthRouteAdmin  exact path="/role/create" component={CreateRole}/>
                             <Route exact path="/course" component={CoursePage}/>
                             <Route exact path="/course/detail/:id" component={CourseDetailPage}/>
-                            <AuthenticatedRoute exact path="/course/create" component={CreateCoursePage}/>
+                            <Route exact path="/course/create" component={CreateCoursePage}/>
                             <AuthenticatedRoute path="/ticket/create" component={CreateTicketPage}/>
                             <Route component={NoMatchPage}/>
                         </Switch>
