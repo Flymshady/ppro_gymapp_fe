@@ -6,7 +6,7 @@ import AuthenticationService, {
 }
 from "../../components/authentication/AuthenticationService";
 import {getProfilesUrl} from "../../constants";
-import TicketsData from "../../components/tickets/TicketsData";
+import ActualUserProfileData from "../../components/profiles/ActualUserProfileData";
 
 class ProfilePage extends Component {
 
@@ -14,11 +14,20 @@ class ProfilePage extends Component {
         super(props);
         this.state = {
             profilesData: [],
-            loading : true
+            loading : true,
+            isClient : false,
+            actualClientData : []
         };
     }
 
     componentDidMount() {
+        const roleName = sessionStorage.getItem(USER_NAME_SESSION_ATTRIBUTE_ROLE);
+        console.log(roleName)
+        if(roleName === 'Client') {
+            this.setState({isClient: true})
+        } else {
+            this.setState({isClient : false})
+        }
 
         fetch(getProfilesUrl, {
             method: 'GET',
@@ -26,7 +35,6 @@ class ProfilePage extends Component {
                 'Content-Type': 'application/json',
                 'Access-Control-Allow-Credentials': true,
                 'Access-Control-Allow-Origin': '*',
-                'authorization' : AuthenticationService.createBasicAuthToken(sessionStorage.getItem(USER_NAME_SESSION_ATTRIBUTE_NAME), sessionStorage.getItem(USER_NAME_SESSION_ATTRIBUTE_PASSWORD))
             }
         })
             .then((response) => response.json())
@@ -37,8 +45,13 @@ class ProfilePage extends Component {
     }
 
     render() {
-        const { profilesData, loading } = this.state;
-        let index = 0;
+        const { profilesData, loading, isClient } = this.state;
+        let actualClientData;
+        if(isClient) {
+            const actualUserLogin = sessionStorage.getItem(USER_NAME_SESSION_ATTRIBUTE_NAME);
+            actualClientData = profilesData.map((profile) => {return profile.login = actualUserLogin});
+        }
+
         return (
             <div className="tables">
                 <h2>
@@ -46,7 +59,12 @@ class ProfilePage extends Component {
                 </h2>
 
                 {loading ? <Loader type="Puff" color="#00BFFF" height={100} width={100} timeout={3000}/> :
-                    <ProfilesData profilesData={profilesData}/>}
+                    (isClient ?
+                        <ActualUserProfileData profileData={actualClientData}/> :
+                            <ProfilesData profilesData={profilesData}/>
+                    )
+                }
+
             </div>
         );
     }

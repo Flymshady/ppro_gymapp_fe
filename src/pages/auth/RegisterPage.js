@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
-import {createAccountUrl, getRolesUrl} from "../../constants";
+import {createAccountAdminUrl, createAccountUrl, getRolesUrl} from "../../constants";
+import {USER_NAME_SESSION_ATTRIBUTE_ROLE} from "../../components/authentication/AuthenticationService";
 
 class RegisterPage extends Component {
 
@@ -12,6 +13,7 @@ class RegisterPage extends Component {
         this.state = {
             roles: [],
             role: '',
+            isAdmin : false
         };
     }
 
@@ -29,6 +31,13 @@ class RegisterPage extends Component {
                 this.setState({roles: jsonResponse})
                 //console.log("response: " + jsonResponse)
             }).catch((err) => console.error(err));
+
+        const roleName = sessionStorage.getItem(USER_NAME_SESSION_ATTRIBUTE_ROLE);
+        if(roleName === 'Admin') {
+            this.setState({isAdmin : true})
+        } else {
+            this.setState({isAdmin : false})
+        }
     }
 
     handleChange = (event) => {
@@ -42,45 +51,61 @@ class RegisterPage extends Component {
         data.forEach(function (value, key) {
             object[key] = value;
         });
-        /*if (data.has("roleName")) {
-            let role = data.get("roleName");
-            this.setState({role : role})
-            //data.set("roleName", "{" + roleName + "}");
-        }*/
 
-        const roleName = data.get("roleName");
-
-
-        /*for (let pair of data.entries()) {
-            console.log(pair[0] + "," + pair[1])
-        }*/
         let json = JSON.stringify(object);
 
-        fetch(createAccountUrl + roleName, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Credentials': true,
-                'Access-Control-Allow-Origin': '*'
-                /*'authorization': AuthenticationService.createBasicAuthToken
-                (sessionStorage.getItem(USER_NAME_SESSION_ATTRIBUTE_NAME),
-                    sessionStorage.getItem(USER_NAME_SESSION_ATTRIBUTE_PASSWORD))*/
-            },
-            body: json
-        }).then(function (response) {
-            if(response.ok) {
-                alert("Účet byl vytvořen");
-            } else {
-                alert("Účet se nepodařilo vytvořit");
-            }
-        }).then(function (text) {
-            //console.log(text)
-        }).catch(function (error) {
-            //console.error(error)
-        });
+        const roleName = data.get("roleName");
+        if(this.state.isAdmin) {
+            fetch(createAccountAdminUrl + roleName, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Credentials': true,
+                    'Access-Control-Allow-Origin': '*'
+                    /*'authorization': AuthenticationService.createBasicAuthToken
+                    (sessionStorage.getItem(USER_NAME_SESSION_ATTRIBUTE_NAME),
+                        sessionStorage.getItem(USER_NAME_SESSION_ATTRIBUTE_PASSWORD))*/
+                },
+                body: json
+            }).then(function (response) {
+                if(response.ok) {
+                    alert("Účet byl vytvořen");
+                } else {
+                    alert("Účet se nepodařilo vytvořit");
+                }
+            }).then(function (text) {
+                console.log(text)
+            }).catch(function (error) {
+                console.error(error)
+            });
+        } else {
+            fetch(createAccountUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Credentials': true,
+                    'Access-Control-Allow-Origin': '*'
+                    /*'authorization': AuthenticationService.createBasicAuthToken
+                    (sessionStorage.getItem(USER_NAME_SESSION_ATTRIBUTE_NAME),
+                        sessionStorage.getItem(USER_NAME_SESSION_ATTRIBUTE_PASSWORD))*/
+                },
+                body: json
+            }).then(function (response) {
+                if(response.ok) {
+                    alert("Účet byl vytvořen");
+                } else {
+                    alert("Účet se nepodařilo vytvořit");
+                }
+            }).then(function (text) {
+                console.log(text)
+            }).catch(function (error) {
+                console.error(error)
+            });
+        }
     }
 
     render() {
+        const isAdmin = this.state.isAdmin;
         return (
             <Form onSubmit={this.handleSubmit}>
                 <Form.Group controlId="formBasicEmail">
@@ -113,10 +138,13 @@ class RegisterPage extends Component {
 
                 <Form.Group controlId="formBasicEmail">
                     <Form.Label>Telefonní číslo</Form.Label>
-                    <Form.Control name="phoneNumber" type="number" placeholder="Zadejte Vaše heslo" required/>
+                    <Form.Control name="phoneNumber" type="tel" placeholder="Zadejte Telefoní číslo" pattern="[0-9]{3}-[0-9]{3}-[0-9]{3}" required/>
+                    <Form.Text className="text-muted">
+                        Zadejte ve formátu 000-000-000
+                    </Form.Text>
                 </Form.Group>
 
-                <Form.Group>
+                {isAdmin &&  <Form.Group>
                     <Form.Label>Role</Form.Label>
                     <Form.Control name="roleName" as="select" required>
                         {this.state.roles.map((role, index) => {
@@ -125,7 +153,7 @@ class RegisterPage extends Component {
                             )
                         })}
                     </Form.Control>
-                </Form.Group>
+                </Form.Group>}
 
                 <Button variant="primary" type="submit">
                     Vytvořit účet

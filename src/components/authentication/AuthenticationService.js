@@ -7,18 +7,22 @@ export const USER_NAME_SESSION_ATTRIBUTE_PASSWORD = 'UserPassword';
 
 export const USER_NAME_SESSION_ATTRIBUTE_ROLE = 'UserRole';
 
+export const USER_NAME_SESSION_ATTRIBUTE_ID = 'UserId';
+
 class AuthenticationService {
 
 
     executeBasicAuthenticationService(username, password) {
 
         let role = '';
+        let id = '';
 
         return axios.get(`${getloginUrl}`,
             { headers: { authorization: this.createBasicAuthToken(username, password),
                     "Access-Control-Allow-Origin":"*"} })
-            .then((response) => {{role = response.data}})
-            .then(() => {sessionStorage.setItem(USER_NAME_SESSION_ATTRIBUTE_ROLE, role)})
+            .then((response) => {{role = response.data.roleName}{id = response.data.id}})
+            .then(() => {{sessionStorage.setItem(USER_NAME_SESSION_ATTRIBUTE_ROLE, role)}
+            {sessionStorage.setItem(USER_NAME_SESSION_ATTRIBUTE_ID, id)}})
     }
 
     /*executeJwtAuthenticationService(username, password) {

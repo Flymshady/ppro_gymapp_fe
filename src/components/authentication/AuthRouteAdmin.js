@@ -17,10 +17,10 @@ class AuthRouteAdmin extends Component {
     }
 
     render() {
-        if (sessionStorage.getItem(USER_NAME_SESSION_ATTRIBUTE_ROLE) === '[ROLE_Admin]') {
+        if (sessionStorage.getItem(USER_NAME_SESSION_ATTRIBUTE_ROLE) === 'Admin') {
             return <Route {...this.props} />
         } else {
-            return <Redirect to="/login" />
+            return <Redirect to={{pathname: '/login', message: 'K pokračování nemáte potřebná oprávnění'}} />
         }
 
     }

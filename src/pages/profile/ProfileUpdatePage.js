@@ -1,7 +1,8 @@
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import React, {Component} from "react";
-import {getAccountDetailUrl , updateAccountUrl} from "../../constants";
+import {updateAccountUrl} from "../../constants";
+import {USER_NAME_SESSION_ATTRIBUTE_ID} from "../../components/authentication/AuthenticationService";
 
 class ProfileUpdatePage extends Component {
 
@@ -14,15 +15,13 @@ class ProfileUpdatePage extends Component {
             lastName: '',
             phoneNumber: '',
             email: '',
-            login: '',
-            password : ''
         }
     }
 
     componentDidMount() {
-        const {firstName, lastName, email, phoneNumber, login, password } = this.props.location.profilesData;
+        const {firstName, lastName, email, phoneNumber} = this.props.location.profilesData;
         this.setState({firstName : firstName, lastName : lastName, phoneNumber : phoneNumber,
-            email : email, login : login, password : password});
+            email : email});
     }
 
     handleChange = (event) => {
@@ -33,19 +32,26 @@ class ProfileUpdatePage extends Component {
         event.preventDefault();
         const data = new FormData(event.target);
 
+        data.append('login','login');
+        data.append('password','password');
+
         let object = {};
         data.forEach(function (value, key) {
             object[key] = value;
         });
 
-        fetch(updateAccountUrl + this.props.match.params.id, {
+        let json = JSON.stringify(object);
+
+        const actualUserId = sessionStorage.getItem(USER_NAME_SESSION_ATTRIBUTE_ID);
+
+        fetch(updateAccountUrl + this.props.match.params.id + "/" + actualUserId, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
                 'Access-Control-Allow-Credentials': true,
                 'Access-Control-Allow-Origin': '*'
             },
-
+            body : json
         }).then(function (response) {
             if (response.ok) {
                 alert("Účet byl upraven");
@@ -79,17 +85,6 @@ class ProfileUpdatePage extends Component {
                 <Form.Group controlId="formBasicEmail">
                     <Form.Label>Email</Form.Label>
                     <Form.Control defaultValue={this.state.email} name="email" type="text" placeholder="email" required onChange={this.handleChange}/>
-                </Form.Group>
-
-                <Form.Group controlId="formBasicEmail">
-                    <Form.Label>Login</Form.Label>
-                    <Form.Control defaultValue={this.state.login} name="login" type="text" placeholder="login"
-                                  required onChange={this.handleChange}/>
-                </Form.Group>
-
-                <Form.Group controlId="formBasicEmail">
-                    <Form.Label>Heslo</Form.Label>
-                    <Form.Control defaultValue={this.state.password} name="password" type="password" placeholder="password" onChange={this.handleChange} required/>
                 </Form.Group>
 
                 <Button variant="primary" type="submit">

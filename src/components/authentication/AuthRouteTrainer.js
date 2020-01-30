@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Route, Redirect } from 'react-router-dom'
 import {USER_NAME_SESSION_ATTRIBUTE_ROLE} from '../authentication/AuthenticationService';
 
-class AuthRouteClient extends Component {
+class AuthRouteTrainer extends Component {
     constructor(props) {
         super(props);
     }
@@ -13,14 +13,14 @@ class AuthRouteClient extends Component {
     }
 
     render() {
-        if (sessionStorage.getItem(USER_NAME_SESSION_ATTRIBUTE_ROLE) === '[ROLE_Client]'
-            || sessionStorage.getItem(USER_NAME_SESSION_ATTRIBUTE_ROLE) === '[ROLE_Admin]') {
+        if (sessionStorage.getItem(USER_NAME_SESSION_ATTRIBUTE_ROLE) === 'Trainer'
+            || sessionStorage.getItem(USER_NAME_SESSION_ATTRIBUTE_ROLE) === 'Admin') {
             return <Route {...this.props} />
         } else {
-            return <Redirect to="/login" />
+            return <Redirect to={{pathname: '/login', message: 'K pokračování nemáte potřebná oprávnění'}} />
         }
 
     }
 }
 
-export default AuthRouteClient;
+export default AuthRouteTrainer;

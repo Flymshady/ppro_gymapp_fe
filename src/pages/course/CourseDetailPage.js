@@ -33,12 +33,12 @@ class CourseDetailPage extends Component {
 
         const role = sessionStorage.getItem(USER_NAME_SESSION_ATTRIBUTE_ROLE);
         this.setState({role: role});
-        if (role === '[ROLE_Trainer]') {
+        if (role === 'Trainer') {
             this.setState({isTrainer: true})
         } else {
             this.setState({isTrainer: false})
         }
-        if (role === '[ROLE_Client]') {
+        if (role === 'Client') {
             this.setState({canSignedCourse: true})
         } else {
             this.setState({canSignedCourse: false})

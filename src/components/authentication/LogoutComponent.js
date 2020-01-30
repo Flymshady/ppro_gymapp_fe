@@ -1,15 +1,11 @@
 import React, { Component } from 'react'
+import {Redirect} from "react-router-dom";
 
 class LogoutComponent extends Component {
     render() {
-        return (
-            <>
-                <h1>You are logged out</h1>
-                <div className="container">
-                    Thank You for Using Our Application.
-                </div>
-            </>
-        )
+        alert('Byl jste úspěšně odhlášen');
+        return <Redirect to={{pathname: '/'}} />
+
     }
 }
 export default LogoutComponent

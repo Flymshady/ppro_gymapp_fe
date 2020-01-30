@@ -16,7 +16,9 @@ export const signCourseUrl = 'http://localhost:8080/courses/sign/';
 
 export const createTicketUrl = 'http://localhost:8080/tickets/create';
 
-export const createAccountUrl = 'http://localhost:8080/accounts/create/admin/';
+export const createAccountAdminUrl = 'http://localhost:8080/accounts/create/admin/';
+
+export const createAccountUrl = 'http://localhost:8080/accounts/createClient';
 
 export const getAccountDetailUrl = 'http://localhost:8080/accounts/detail/';
 

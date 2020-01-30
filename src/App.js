@@ -22,6 +22,7 @@ import CourseDetailPage from "./pages/course/CourseDetailPage";
 import UpdateCoursePage from "./pages/course/UpdateCoursePage";
 import UpdateRole from "./pages/user/UpdateRole";
 import ProfileUpdatePage from "./pages/profile/ProfileUpdatePage";
+import AuthRouteTrainer from "./components/authentication/AuthRouteTrainer";
 
 class App extends Component {
     render() {
@@ -36,15 +37,15 @@ class App extends Component {
                             <Route exact path="/" component={HomePage}/>
                             <Route exact path="/account/create" component={RegisterPage}/>
                             <Route path="/login" component={LoginPage} />
-                            <AuthenticatedRoute path="/logout" exact component={LogoutComponent} />
+                            <Route path="/logout" exact component={LogoutComponent} />
                             <AuthenticatedRoute exact path="/ticket" component={TicketPage}/>
                             <Route  exact path="/role/create" component={CreateRole}/>
                             <AuthenticatedRoute exact path="/course" component={CoursePage}/>
                             <Route exact path="/role/update" component={UpdateRole}/>
                             <Route exact path="/course/detail/:id" component={CourseDetailPage}/>
                             <Route exact path="/course/update/:id" component={UpdateCoursePage}/>
-                            <Route exact path="/course/create" component={CreateCoursePage}/>
-                            <Route exact path="/profile" component={ProfilePage}/>
+                            <AuthRouteTrainer exact path="/course/create" component={CreateCoursePage}/>
+                            <AuthenticatedRoute exact path="/profile" component={ProfilePage}/>
                             <Route exact path="/profile/detail/:id" component={ProfileDetail}/>
                             <Route exact path="/profile/update/:id" component={ProfileUpdatePage}/>
                             <AuthenticatedRoute path="/ticket/create" component={CreateTicketPage}/>

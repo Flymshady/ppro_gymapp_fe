@@ -105,17 +105,11 @@ class CreateCoursePage extends Component {
                 <Form.Group controlId="formBasicEmail">
                     <Form.Label>Začátek kurzu</Form.Label>
                     <Form.Control name="beginDate" type="datetime-local" placeholder="Datum a čas začátku kurzu" required />
-                    <Form.Text className="text-muted">
-                        Zadejte ve formátu YYYY-MM-DD
-                    </Form.Text>
                 </Form.Group>
 
                 <Form.Group controlId="formBasicEmail">
                     <Form.Label>Konec kurzu</Form.Label>
                     <Form.Control name="endDate" type="datetime-local" placeholder="Datum konce kurzu" required />
-                    <Form.Text className="text-muted">
-                        Zadejte ve formátu YYYY-MM-DD
-                    </Form.Text>
                 </Form.Group>
 
                 <Form.Group controlId="formBasicEmail">
