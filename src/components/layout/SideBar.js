@@ -8,6 +8,7 @@ class SideBar extends Component {
                 <a className="btn btn-outline-dark" href="/">Domovská stránka</a>
                 <a className="btn btn-outline-dark" href="/ticket">Permanentky</a>
                 <a className="btn btn-outline-dark" href="/course">Kurzy</a>
+                <a className="btn btn-outline-dark" href="/profile">Profil</a>
             </div>
         );
     }

@@ -2,6 +2,8 @@ export const getTicketsUrl = 'http://localhost:8080/tickets/all';
 
 export const getCoursesUrl = 'http://localhost:8080/courses/all';
 
+export const getProfilesUrl = 'http://localhost:8080/accounts/all';
+
 export const createCourseUrl = 'http://localhost:8080/courses/create/';
 
 export const getCourseDetailUrl = 'http://localhost:8080/courses/detail/';
@@ -17,6 +19,10 @@ export const createTicketUrl = 'http://localhost:8080/tickets/create';
 export const createAccountUrl = 'http://localhost:8080/accounts/create/admin/';
 
 export const getAccountDetailUrl = 'http://localhost:8080/accounts/detail/';
+
+export const updateAccountUrl = 'http://localhost:8080/accounts/update/';
+
+export const removeAccountUrl = 'http://localhost:8080/accounts/remove/';
 
 export const createRoleUrl = 'http://localhost:8080/roles/create';
 
