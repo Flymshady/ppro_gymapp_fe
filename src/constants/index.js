@@ -8,6 +8,10 @@ export const createCourseUrl = 'http://localhost:8080/courses/create/';
 
 export const getCourseDetailUrl = 'http://localhost:8080/courses/detail/';
 
+export const getUserSignedCoursesUrl = 'http://localhost:8080/courses/allByClient/';
+
+export const signOutCourseUrl = 'http://localhost:8080/courses/signout/';
+
 export const updateCourseUrl = 'http://localhost:8080/courses/update/';
 
 export const removeCourseUrl = 'http://localhost:8080/courses/remove/';

@@ -16,7 +16,7 @@ class CoursesDataTrainer extends Component {
 
     renderTableDataCourses() {
         return this.props.courses.map((course, index) => {
-            const { id, name, beginDate, endDate, count, trainer, price, maxCapacity } = course;
+            const {id, name, beginDate, endDate, count, trainer, price, maxCapacity} = course;
             const newTo = {
                 pathname: "/course/detail/" + id,
                 courseName: name
@@ -37,7 +37,7 @@ class CoursesDataTrainer extends Component {
 
     renderTableDataCoursesTrainer() {
         return this.props.coursesTrainer.map((course, index) => {
-            const { id, name, beginDate, endDate, count, trainer, price, maxCapacity } = course;
+            const {id, name, beginDate, endDate, count, trainer, price, maxCapacity} = course;
             const newTo = {
                 pathname: "/course/detail/" + id,
                 courseName: name
@@ -57,19 +57,34 @@ class CoursesDataTrainer extends Component {
     }
 
     render() {
+        let renderTable = false;
+        if (this.props.coursesTrainer.length === 0) {
+            renderTable = false;
+        } else {
+            renderTable = true;
+        }
+
         console.log("Data: " + this.props.courses);
         if (this.props.courses.length === 0) {
-            return <p className="text-danger">Nejsou vypsané žádné kurzy</p>;
+            return <div>
+                <Link to="/course/create" className="btn btn-primary">Vytvořit nový kurz</Link>
+                <p className="text-danger">Nejsou vypsané žádné kurzy</p>
+            </div>;
         } else {
             return (
                 <div>
                     <h3>Vaše kurzy:</h3>
-                    <table id='tables'>
-                        <tbody>
-                        <tr>{this.renderTableHeader()}</tr>
-                        {this.renderTableDataCoursesTrainer()}
-                        </tbody>
-                    </table>
+                    <Link to="/course/create" className="btn btn-primary">Vytvořit nový kurz</Link>
+                    {renderTable &&
+                    <div>
+                        <table id='tables'>
+                            <tbody>
+                            <tr>{this.renderTableHeader()}</tr>
+                            {this.renderTableDataCoursesTrainer()}
+                            </tbody>
+                        </table>
+                    </div>
+                    }
                     <h3>Všechny kurzy:</h3>
                     <table id='tables'>
                         <tbody>

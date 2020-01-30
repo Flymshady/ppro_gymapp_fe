@@ -1,13 +1,13 @@
 import React, {Component} from 'react';
 import '../../styles/Table.css';
 import '../../styles/Detail.css';
-import {getCourseDetailUrl, removeCourseUrl, signCourseUrl} from "../../constants";
+import {getCourseDetailUrl, removeCourseUrl, signCourseUrl, signOutCourseUrl} from "../../constants";
 import AuthenticationService, {
     USER_NAME_SESSION_ATTRIBUTE_NAME, USER_NAME_SESSION_ATTRIBUTE_PASSWORD,
     USER_NAME_SESSION_ATTRIBUTE_ROLE
 } from "../../components/authentication/AuthenticationService";
 import Button from "react-bootstrap/Button";
-import {Link} from "react-router-dom";
+import {Link, Redirect} from "react-router-dom";
 
 class CourseDetailPage extends Component {
 
@@ -22,7 +22,8 @@ class CourseDetailPage extends Component {
             canSignedCourse: false,
             isUnauthorised: false,
             role: "",
-            actualDateTime : {}
+            actualDateTime : {},
+            isSigned : false
         };
     }
 
@@ -48,6 +49,9 @@ class CourseDetailPage extends Component {
         } else {
             this.setState({isUnauthorised: false})
         }
+
+        //TODO aby se nemohl příhlásit aktualne prihlaseny pokud je uz prihlaseny na kurz
+        this.setState({isSigned : this.props.location.isSigned});
 
         fetch(getCourseDetailUrl + this.props.match.params.id, {
             method: 'GET',
@@ -83,6 +87,7 @@ class CourseDetailPage extends Component {
         }).then(function (response) {
             if(response.ok) {
                 alert("Kurz byl zapsán");
+                window.location = '/course';
             } else {
                 alert("Kurz se nepodařilo zapsat");
             }
@@ -93,6 +98,33 @@ class CourseDetailPage extends Component {
 
     }
 
+    handleSignOut = (event) => {
+        let json = JSON.stringify(this.state.actualDateTime);
+        console.log(this.state.actualDateTime);
+        fetch(signOutCourseUrl + this.props.match.params.id, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Credentials': true,
+                'Access-Control-Allow-Origin': '*',
+                'authorization' : AuthenticationService.createBasicAuthToken(sessionStorage
+                    .getItem(USER_NAME_SESSION_ATTRIBUTE_NAME), sessionStorage
+                    .getItem(USER_NAME_SESSION_ATTRIBUTE_PASSWORD))
+            },
+            body: json
+        }).then(function (response) {
+            if(response.ok) {
+                alert("Kurz byl odepsán");
+                window.location = '/course';
+            } else {
+                alert("Kurz se nepodařilo odepsat");
+            }
+        }).then(function (text) {
+        }).catch(function (error) {
+            console.error(error)
+        });
+}
+
     handleDelete = (event) => {
         fetch(removeCourseUrl + this.props.match.params.id, {
             method: 'DELETE',
@@ -102,19 +134,23 @@ class CourseDetailPage extends Component {
                 'Access-Control-Allow-Origin': '*'
             }
         })
-            .then((response) => response.json())
-            .then((jsonResponse) => {
-                console.log(jsonResponse)
+            .then(function (response) {
+                if(response.ok) {
+                    alert("Kurz byl úspěšně smazán");
+                    window.location = '/course';
+                } else {
+                    alert("Kurz se nepodařilo smazat");
+                }
+            }).then((text) => {
             }).catch((err) => console.error(err));
 
-        this.props.history.push('/course')
     }
 
     render() {
         const coursesData = this.state.courseData;
         const {firstName, lastName} = this.state.trainer;
         const occupancy = this.state.accountSignedCourses.length;
-        const {isTrainer, canSignedCourse, isUnauthorised} = this.state;
+        const {isTrainer, canSignedCourse, isUnauthorised, isSigned} = this.state;
 
         return (
             <div className="container text-center">
@@ -171,10 +207,12 @@ class CourseDetailPage extends Component {
                                         <Link to={{pathname : '/course/update/' + this.props.match.params.id , courseData : coursesData}} className="btn btn-secondary btn-space">Upravit</Link>
                                         <Button onClick={this.handleDelete} className="btn btn-danger btn-space">Smazat</Button>
                                     </div></div>}
-                                    {canSignedCourse && <Button onClick={this.handleSigned} className="btn btn-primary">
+                                    {canSignedCourse && !isSigned && <Button onClick={this.handleSigned} className="btn btn-primary">
                                         Přihlásit se na kurz</Button>}
+                                    {canSignedCourse && isSigned && <Button onClick={this.handleSignOut} className="btn btn-primary">
+                                        Odhlásit se z kurzu</Button>}
                                     {isUnauthorised &&
-                                    <a href="/login" className="btn btn-primary">Přihlásit se na kurz</a>}
+                                    <Link to={{pathname:'/login', message:'Pro přihlášení se na kurz je nutné se přihlásit'}} className="btn btn-primary">Přihlásit se na kurz</Link>}
                                 </div>
                             </div>
                         </div>

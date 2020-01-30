@@ -40,7 +40,7 @@ class App extends Component {
                             <Route path="/logout" exact component={LogoutComponent} />
                             <AuthenticatedRoute exact path="/ticket" component={TicketPage}/>
                             <Route  exact path="/role/create" component={CreateRole}/>
-                            <AuthenticatedRoute exact path="/course" component={CoursePage}/>
+                            <Route exact path="/course" component={CoursePage}/>
                             <Route exact path="/role/update" component={UpdateRole}/>
                             <Route exact path="/course/detail/:id" component={CourseDetailPage}/>
                             <Route exact path="/course/update/:id" component={UpdateCoursePage}/>

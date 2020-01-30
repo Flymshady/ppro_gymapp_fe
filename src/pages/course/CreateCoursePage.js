@@ -69,6 +69,7 @@ class CreateCoursePage extends Component {
         }).then(function (response) {
             if(response.ok) {
                 alert("Kurz byl vytvořen");
+                window.location = '/course';
             } else {
                 alert("Kurz se nepodařilo vytvořit");
             }

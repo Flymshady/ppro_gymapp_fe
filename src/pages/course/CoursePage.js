@@ -2,10 +2,10 @@ import React, {Component} from 'react';
 import CoursesData from "../../components/courses/CoursesData";
 import Loader from 'react-loader-spinner'
 import AuthenticationService, {
-    USER_NAME_SESSION_ATTRIBUTE_NAME, USER_NAME_SESSION_ATTRIBUTE_PASSWORD
+    USER_NAME_SESSION_ATTRIBUTE_NAME, USER_NAME_SESSION_ATTRIBUTE_PASSWORD, USER_NAME_SESSION_ATTRIBUTE_ROLE
 } from "../../components/authentication/AuthenticationService";
 import CoursesDataTrainer from "../../components/courses/CourseDataTrainer";
-import {getCoursesUrl} from "../../constants";
+import {getCoursesUrl, getUserSignedCoursesUrl} from "../../constants";
 
 class CoursePage extends Component {
 
@@ -14,6 +14,7 @@ class CoursePage extends Component {
         this.state = {
             coursesData: [],
             coursesDataTrainer : [],
+            coursesDataUser : [],
             loading : true,
             isTrainer : false
         };
@@ -34,10 +35,26 @@ class CoursePage extends Component {
                 this.setState({coursesData: jsonResponse, loading : false})
                 console.log("response: " + jsonResponse)
             }).catch((err) => console.error(err));
+
+        const userLogin = sessionStorage.getItem(USER_NAME_SESSION_ATTRIBUTE_NAME);
+
+        fetch(getUserSignedCoursesUrl + userLogin, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Credentials': true,
+                'Access-Control-Allow-Origin': '*',
+            }
+        })
+            .then((response) => response.json())
+            .then((jsonResponse) => {
+                this.setState({coursesDataUser: jsonResponse})
+                console.log("response: " + jsonResponse)
+            }).catch((err) => console.error(err));
     }
 
     render() {
-        const { coursesData, loading } = this.state;
+        const { coursesData, loading, coursesDataUser } = this.state;
         let isTrainer = this.state.isTrainer;
         let coursesDataTrainer = [];
         let index = 0;
@@ -47,10 +64,12 @@ class CoursePage extends Component {
                 index++;
             }
         }
-        if(coursesDataTrainer.length === 0) {
-            isTrainer = false;
-        } else {
+        const roleName = sessionStorage.getItem(USER_NAME_SESSION_ATTRIBUTE_ROLE);
+
+        if(roleName === 'Trainer') {
             isTrainer = true;
+        } else {
+            isTrainer = false;
         }
         console.log(coursesDataTrainer)
         console.log(isTrainer)
@@ -64,7 +83,7 @@ class CoursePage extends Component {
                     ? <Loader type="Puff" color="#00BFFF" height={100} width={100} timeout={3000}/>
                     : (isTrainer
                             ? <CoursesDataTrainer coursesTrainer={coursesDataTrainer} courses={coursesData}/>
-                            : <CoursesData courses={coursesData}/>
+                            : <CoursesData courses={coursesData} userCourses={coursesDataUser}/>
                     )
                 }
             </div>

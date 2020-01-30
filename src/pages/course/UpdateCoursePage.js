@@ -105,6 +105,7 @@ class UpdateCoursePage extends Component {
         }).then(function (response) {
             if (response.ok) {
                 alert("Kurz byl upraven");
+                window.location = '/course';
             } else {
                 alert("Kurz se nepodařilo upravit");
             }
