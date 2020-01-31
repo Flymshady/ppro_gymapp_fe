@@ -2,21 +2,48 @@ import React, {Component} from 'react';
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import '../../styles/Forms.css'
-import {createTicketUrl} from '../../constants/index';
+import {createTicketUrl, getAllClients, getTicketTypes} from '../../constants/index';
 
 class CreateTicketPage extends Component {
 
     constructor(props) {
         super(props);
+        this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.state = {
-            ticketType: ["FITNESS", "POWERLIFTING", "CARDIO"]
+            accounts: [],
+            account: '',
+            beginDate: '',
+            endDate: '',
+            valid: 'TRUE',
+            entrances: '',
+            ticketTypes: [],
+            ticketType:''
         };
     }
 
+    //  componentDidMount() {
+    //TODO vzor pro filtrace dle atributu
+    /*fetch(ticketUrl, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Credentials': true,
+            'Access-Control-Allow-Origin': 'http://localhost:3000'
+        }
+    })
+        .then((response) => response.json())
+        .then((jsonResponse) => {
+            let ticketTypes = jsonResponse.map(function(type,i) {
+                return type.ticketType.type;
+            });
+            this.setState({ticketType:ticketTypes})
+            console.log(jsonResponse)
+        }).catch((err) => console.error(err));
+     */
+    //   }
     componentDidMount() {
-        //TODO vzor pro filtrace dle atributu
-        /*fetch(ticketUrl, {
+        fetch(getAllClients, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -26,15 +53,30 @@ class CreateTicketPage extends Component {
         })
             .then((response) => response.json())
             .then((jsonResponse) => {
-                let ticketTypes = jsonResponse.map(function(type,i) {
-                    return type.ticketType.type;
-                });
-                this.setState({ticketType:ticketTypes})
-                console.log(jsonResponse)
+                this.setState({accounts: jsonResponse})
+                this.setState({account: jsonResponse[0]});
+                console.log("response: " + jsonResponse)
             }).catch((err) => console.error(err));
-         */
+
+        fetch(getTicketTypes, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Credentials': true,
+                'Access-Control-Allow-Origin': 'http://localhost:3000'
+            }
+        })
+            .then((response) => response.json())
+            .then((jsonResponse) => {
+                this.setState({ticketTypes: jsonResponse})
+                this.setState({ticketType : jsonResponse[0]});
+                console.log("response: " + jsonResponse)
+            }).catch((err) => console.error(err));
     }
 
+    handleChange = (event) => {
+        this.setState({[event.target.id]: event.target.value});
+    }
 
 
     handleSubmit(event) {
@@ -48,7 +90,10 @@ class CreateTicketPage extends Component {
         });
         let json = JSON.stringify(object);
 
-        fetch(createTicketUrl, {
+        const accountId = data.get("accountId");
+        const ticketTypeId = data.get("ticketTypeId");
+
+        fetch(createTicketUrl +"/"+ accountId +"/"+ ticketTypeId, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -57,10 +102,12 @@ class CreateTicketPage extends Component {
             },
             body: json
         }).then(function (response) {
-            console.log(json)
-            return response.text();
+            if(response.ok) {
+                alert("Permanentka byla vytvořena");
+            } else {
+                alert("Permanentku se nepodařilo vytvořit");
+            }
         }).then(function (text) {
-            console.log(text)
         }).catch(function (error) {
             console.error(error)
         });
@@ -70,28 +117,43 @@ class CreateTicketPage extends Component {
     render() {
         return(
             <Form className="forms" id="createTicket" onSubmit={this.handleSubmit}>
-                <Form.Group controlId="formBasicEmail">
-                    <Form.Label>Název</Form.Label>
-                    <Form.Control name="name" type="text" placeholder="Název permanentky" required />
+
+                <Form.Group>
+                    <Form.Label>Výběr typu</Form.Label>
+                    <Form.Control name="ticketTypeId" as="select" onChange={this.handleChange} required>
+                        {this.state.ticketTypes.map((ticketType, index) => {
+                            return (
+                                <option key={index} value={ticketType.id}>{ticketType.name}</option>
+                            )
+                        })}
+                    </Form.Control>
                 </Form.Group>
 
-                <Form.Group controlId="formBasicPassword">
-                    <Form.Label>Datum nákupu</Form.Label>
-                    <Form.Control name="beginDate" type="text" placeholder="Datum nákupu permanentky" required />
+                <Form.Group>
+                    <Form.Label>Výběr klienta</Form.Label>
+                    <Form.Control name="accountId" as="select" onChange={this.handleChange} required>
+                        {this.state.accounts.map((account, index) => {
+                            return (
+                                <option key={index} value={account.id}>{account.firstName} {account.lastName}</option>
+                            )
+                        })}
+                    </Form.Control>
+                </Form.Group>
+
+                <Form.Group controlId="formBasicEmail">
+                    <Form.Label>Začátek platnosti</Form.Label>
+                    <Form.Control name="beginDate" type="datetime-local" placeholder="Datum nákupu permanentky" required />
                     <Form.Text className="text-muted">
                         Zadejte ve formátu YYYY-MM-DD
                     </Form.Text>
                 </Form.Group>
 
-                <Form.Group controlId="exampleForm.ControlSelect1">
-                    <Form.Label>Typ permanentky</Form.Label>
-                    <Form.Control name="ticketType" as="select">
-                        {this.state.ticketType.map((type, index) => {
-                            return (
-                                <option key={index}>{type}</option>
-                            )
-                        })}
-                    </Form.Control>
+                <Form.Group controlId="formBasicEmail">
+                    <Form.Label>Konec platnosti</Form.Label>
+                    <Form.Control name="endDate" type="datetime-local" placeholder="Datum nákupu permanentky" required />
+                    <Form.Text className="text-muted">
+                        Zadejte ve formátu YYYY-MM-DD
+                    </Form.Text>
                 </Form.Group>
 
                 <Button variant="primary" type="submit">

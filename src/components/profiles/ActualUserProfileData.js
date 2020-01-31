@@ -6,6 +6,7 @@ class ActualUserProfileData extends Component {
 
     render() {
         const profileData = this.props.profileData;
+        console.log(this.props.profileData);
         return (
             <div className="container text-center">
                 <h2>Váš účet </h2>

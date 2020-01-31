@@ -23,6 +23,7 @@ import UpdateCoursePage from "./pages/course/UpdateCoursePage";
 import UpdateRole from "./pages/user/UpdateRole";
 import ProfileUpdatePage from "./pages/profile/ProfileUpdatePage";
 import AuthRouteTrainer from "./components/authentication/AuthRouteTrainer";
+import StatisticsPage from "./pages/statistics/StatisticsPage";
 
 class App extends Component {
     render() {
@@ -49,6 +50,7 @@ class App extends Component {
                             <Route exact path="/profile/detail/:id" component={ProfileDetail}/>
                             <Route exact path="/profile/update/:id" component={ProfileUpdatePage}/>
                             <AuthenticatedRoute path="/ticket/create" component={CreateTicketPage}/>
+                            <AuthRouteAdmin path="/statistics" component={StatisticsPage}/>
                             <Route component={NoMatchPage}/>
                         </Switch>
                     </Layout>

@@ -46,11 +46,17 @@ class ProfilePage extends Component {
 
     render() {
         const { profilesData, loading, isClient } = this.state;
-        let actualClientData;
+        let actualClientData = [];
         if(isClient) {
             const actualUserLogin = sessionStorage.getItem(USER_NAME_SESSION_ATTRIBUTE_NAME);
-            actualClientData = profilesData.map((profile) => {return profile.login = actualUserLogin});
+            let index = 0;
+            for(let i = 0; i < profilesData.length; i++) {
+                if(profilesData[i].login === actualUserLogin) {
+                    actualClientData[index] = profilesData[i];
+                }
+            }
         }
+        console.log(actualClientData);
 
         return (
             <div className="tables">
@@ -60,7 +66,7 @@ class ProfilePage extends Component {
 
                 {loading ? <Loader type="Puff" color="#00BFFF" height={100} width={100} timeout={3000}/> :
                     (isClient ?
-                        <ActualUserProfileData profileData={actualClientData}/> :
+                        <ActualUserProfileData profileData={actualClientData[0]}/> :
                             <ProfilesData profilesData={profilesData}/>
                     )
                 }

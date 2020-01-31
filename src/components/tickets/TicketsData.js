@@ -3,7 +3,7 @@ import '../../styles/Table.css';
 
 class TicketsData extends Component {
 
-    header = ["Název", "Datum nákupu", "Datum vypršení", "Platnost", "Typ"];
+    header = ["Název","Klient", "Datum nákupu", "Datum vypršení", "Platnost"];
 
     renderTableHeader() {
         return this.header.map((h, i) => {
@@ -15,17 +15,17 @@ class TicketsData extends Component {
 
     renderTableData() {
         return this.props.ticketsData.map((ticket, index) => {
-            const { id, name, beginDate, endDate, valid, ticketType } = ticket;
+            const { id, beginDate, endDate, valid, ticketType, account } = ticket;
             let validString = "";
             if (valid === true) validString = "Platná";
             else validString = "Neplatná";
             return (
                 <tr key={id}>
-                    <td>{name}</td>
+                    <td>{ticketType.name}</td>
+                    <td>{account.login}</td>
                     <td>{beginDate}</td>
                     <td>{endDate}</td>
                     <td>{validString}</td>
-                    <td>{ticketType.type}</td>
                 </tr>
             )
         })

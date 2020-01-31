@@ -55,6 +55,7 @@ class ProfileUpdatePage extends Component {
         }).then(function (response) {
             if (response.ok) {
                 alert("Účet byl upraven");
+                window.location = "/profile";
             } else {
                 alert("Účet se nepodařilo upravit");
             }
@@ -79,7 +80,7 @@ class ProfileUpdatePage extends Component {
 
                 <Form.Group controlId="formBasicEmail">
                     <Form.Label>Telefon</Form.Label>
-                    <Form.Control defaultValue={this.state.phoneNumber} name="phoneNumber" type="number" placeholder="phoneNumber" required onChange={this.handleChange}/>
+                    <Form.Control defaultValue={this.state.phoneNumber} name="phoneNumber" type="tel" pattern="[0-9]{3}-[0-9]{3}-[0-9]{3}" placeholder="phoneNumber" required onChange={this.handleChange}/>
                 </Form.Group>
 
                 <Form.Group controlId="formBasicEmail">

@@ -28,8 +28,6 @@ export const getAccountDetailUrl = 'http://localhost:8080/accounts/detail/';
 
 export const updateAccountUrl = 'http://localhost:8080/accounts/update/';
 
-export const removeAccountUrl = 'http://localhost:8080/accounts/remove/';
-
 export const createRoleUrl = 'http://localhost:8080/roles/create';
 
 export const getRolesUrl = 'http://localhost:8080/roles/all';
@@ -37,5 +35,23 @@ export const getRolesUrl = 'http://localhost:8080/roles/all';
 export const getloginUrl = 'http://localhost:8080/basicauth';
 
 export const getAllTrainers = 'http://localhost:8080/accounts/all/trainer';
+
+export const getAllClients = 'http://localhost:8080/accounts/all/clients';
+
+export const getTicketTypes = 'http://localhost:8080/ticketTypes/all';
+
+export const createTicketTypeUrl = 'http://localhost:8080/ticketTypes/create/';
+
+export const getTicketTypeDetailUrl = 'http://localhost:8080/ticketTypes/detail/';
+
+export const updateTicketTypeUrl = 'http://localhost:8080/ticketTypes/update/';
+
+export const getTicketDetailUrl = 'http://localhost:8080/tickets/detail/';
+
+export const removeTicketUrl = 'http://localhost:8080/tickets/remove/';
+
+export const updateTicketUrl = 'http://localhost:8080/tickets/update/';
+
+export const createEntranceUrl = 'http://localhost:8080/entrances/create/';
 
 
