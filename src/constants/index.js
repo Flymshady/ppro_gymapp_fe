@@ -1,5 +1,7 @@
 export const getTicketsUrl = 'http://localhost:8080/tickets/all';
 
+export const getTicketsByAccountUrl = 'http://localhost:8080/tickets/account/';
+
 export const getCoursesUrl = 'http://localhost:8080/courses/all';
 
 export const getProfilesUrl = 'http://localhost:8080/accounts/all';
@@ -52,6 +54,18 @@ export const removeTicketUrl = 'http://localhost:8080/tickets/remove/';
 
 export const updateTicketUrl = 'http://localhost:8080/tickets/update/';
 
+export const getEntrancesUrl = 'http://localhost:8080/entrances/ticket/';
+
+export const getEntranceValidationUrl = 'http://localhost:8080/entrances/validCheck/';
+
 export const createEntranceUrl = 'http://localhost:8080/entrances/create/';
+
+export const updateEntranceUrl = 'http://localhost:8080/entrances/update/';
+
+export const removeEntranceUrl = 'http://localhost:8080/entrances/remove/';
+
+export const getEntranceDetailUrl = 'http://localhost:8080/entrances/detail/';
+
+export const updateEntranceEndDateUrl = 'http://localhost:8080/entrances/updateEndDate/';
 
 

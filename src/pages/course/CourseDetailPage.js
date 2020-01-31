@@ -50,7 +50,6 @@ class CourseDetailPage extends Component {
             this.setState({isUnauthorised: false})
         }
 
-        //TODO aby se nemohl příhlásit aktualne prihlaseny pokud je uz prihlaseny na kurz
         this.setState({isSigned : this.props.location.isSigned});
 
         fetch(getCourseDetailUrl + this.props.match.params.id, {

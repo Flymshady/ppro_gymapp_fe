@@ -1,33 +1,31 @@
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import React, {Component} from "react";
-import {updateTicketTypeUrl} from "../../constants";
+import {updateEntranceUrl} from "../../constants";
 
-class UpdateTicketTypePage extends Component {
+class UpdateTicketEntrancePage extends Component {
 
     constructor(props) {
         super(props);
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.state = {
-            name: '',
-            price: '',
-            entrancesTotal: ''
+            beginDate: '',
+            endDate: '',
         }
     }
 
     componentDidMount() {
-
-        const {name, price, entrancesTotal} = this.props.location.ticketTypeData;
-        this.setState({name : name, price : price, entrancesTotal : entrancesTotal});
-
+        const {beginDate, endDate} = this.props.location.entranceData;
+        console.log(this.props.location.ticketData);
+        this.setState({
+            beginDate: beginDate, endDate: endDate
+        });
     }
 
     handleChange = (event) => {
         this.setState({[event.target.id]: event.target.value});
     };
-
-
 
     handleSubmit(event) {
         event.preventDefault();
@@ -41,7 +39,7 @@ class UpdateTicketTypePage extends Component {
         let json = JSON.stringify(object);
         console.log(json);
 
-        fetch(updateTicketTypeUrl + this.props.match.params.id, {
+        fetch(updateEntranceUrl + this.props.match.params.id, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -51,9 +49,10 @@ class UpdateTicketTypePage extends Component {
             body: json
         }).then(function (response) {
             if (response.ok) {
-                alert("Typ permanentky byl upraven");
+                alert("Vstup byl upraven");
+                window.location = '/ticket/entrance/' + this.props.match.params.id;
             } else {
-                alert("Typ permanentky se nepodařilo upravit");
+                alert("Vstup se nepodařilo upravit");
             }
         }).then(function (text) {
         }).catch(function (error) {
@@ -64,20 +63,21 @@ class UpdateTicketTypePage extends Component {
     render() {
         return (
             <Form className="forms" onSubmit={this.handleSubmit}>
+
                 <Form.Group controlId="formBasicEmail">
-                    <Form.Label>Název</Form.Label>
-                    <Form.Control defaultValue={this.state.name} name="name" type="text" placeholder="Název kurzu" required onChange={this.handleChange}/>
+                    <Form.Label>Začátek vstupu</Form.Label>
+                    <Form.Control defaultValue={this.state.beginDate} name="beginDate" type="datetime-local"
+                                  placeholder="Datum a čas začátku začátku vstupu"
+                                  required onChange={this.handleChange}/>
                 </Form.Group>
 
                 <Form.Group controlId="formBasicEmail">
-                    <Form.Label>Cena</Form.Label>
-                    <Form.Control defaultValue={this.state.price} name="price" type="number" placeholder="Cena kurzu" required onChange={this.handleChange}/>
+                    <Form.Label>Konec vstupu</Form.Label>
+                    <Form.Control defaultValue={this.state.endDate} name="endDate" type="datetime-local"
+                                  placeholder="Datum a čas konce vstupu" onChange={this.handleChange}
+                                  required/>
                 </Form.Group>
 
-                <Form.Group controlId="formBasicEmail">
-                    <Form.Label>Kapacita</Form.Label>
-                    <Form.Control defaultValue={this.state.entrancesTotal} name="entrancesTotal" type="number" placeholder="Počet možných vstupů" required onChange={this.handleChange}/>
-                </Form.Group>
                 <Button variant="primary" type="submit">
                     Upravit
                 </Button>
@@ -86,4 +86,4 @@ class UpdateTicketTypePage extends Component {
     }
 }
 
-export default UpdateTicketTypePage;
+export default UpdateTicketEntrancePage;

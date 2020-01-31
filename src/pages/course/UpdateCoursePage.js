@@ -162,7 +162,7 @@ class UpdateCoursePage extends Component {
 
                 <Form.Group>
                     <Form.Label>Výběr trenéra</Form.Label>
-                    <Form.Control defaultValue={this.state.trainer.id} name="trainerId" as="select" onChange={this.handleChangeTrainerId} required>
+                    <Form.Control value={this.state.trainer.id} name="trainerId" as="select" onChange={this.handleChangeTrainerId} required>
                         {this.state.trainers.map((trainer, index) => {
                             return (
                                 <option key={index} value={trainer.id}>{trainer.firstName} {trainer.lastName}</option>

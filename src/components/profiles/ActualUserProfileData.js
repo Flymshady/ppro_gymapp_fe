@@ -14,8 +14,6 @@ class ActualUserProfileData extends Component {
                     <div class="panel panel-info align-items-center text-center">
                         <div class="panel-body">
                             <div class="row">
-                                <div class="col-md-2 col-lg-2 " align="center"></div>
-
                                 <div class=" col-md-9 col-lg-9 ">
                                     <table class="table table-user-information">
                                         <tbody>
