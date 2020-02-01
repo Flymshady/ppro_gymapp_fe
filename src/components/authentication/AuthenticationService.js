@@ -1,23 +1,37 @@
 import axios from 'axios'
+import {getloginUrl} from "../../constants";
 
-const API_URL = 'http://localhost:8080';
+export const USER_NAME_SESSION_ATTRIBUTE_NAME = 'authenticatedUser';
 
-export const USER_NAME_SESSION_ATTRIBUTE_NAME = 'authenticatedUser'
+export const USER_NAME_SESSION_ATTRIBUTE_PASSWORD = 'UserPassword';
+
+export const USER_NAME_SESSION_ATTRIBUTE_ROLE = 'UserRole';
+
+export const USER_NAME_SESSION_ATTRIBUTE_ID = 'UserId';
 
 class AuthenticationService {
 
+
     executeBasicAuthenticationService(username, password) {
-        return axios.get(`${API_URL}/basicauth`,
-            { headers: { authorization: this.createBasicAuthToken(username, password) } })
+
+        let role = '';
+        let id = '';
+
+        return axios.get(`${getloginUrl}`,
+            { headers: { authorization: this.createBasicAuthToken(username, password),
+                    "Access-Control-Allow-Origin":"*"} })
+            .then((response) => {{role = response.data.roleName}{id = response.data.id}})
+            .then(() => {{sessionStorage.setItem(USER_NAME_SESSION_ATTRIBUTE_ROLE, role)}
+            {sessionStorage.setItem(USER_NAME_SESSION_ATTRIBUTE_ID, id)}})
     }
 
-    executeJwtAuthenticationService(username, password) {
+    /*executeJwtAuthenticationService(username, password) {
         console.log(username);
-        return axios.post(`${API_URL}/authenticate`, {
+        return axios.post(`${postloginUrl}`, {
             username,
             password
         })
-    }
+    }*/
 
     createBasicAuthToken(username, password) {
         return 'Basic ' + window.btoa(username + ":" + password)
@@ -27,6 +41,7 @@ class AuthenticationService {
         //let basicAuthHeader = 'Basic ' +  window.btoa(username + ":" + password)
         //console.log('registerSuccessfulLogin')
         sessionStorage.setItem(USER_NAME_SESSION_ATTRIBUTE_NAME, username)
+        sessionStorage.setItem(USER_NAME_SESSION_ATTRIBUTE_PASSWORD, password)
         this.setupAxiosInterceptors(this.createBasicAuthToken(username, password))
     }
 
@@ -42,6 +57,8 @@ class AuthenticationService {
 
     logout() {
         sessionStorage.removeItem(USER_NAME_SESSION_ATTRIBUTE_NAME);
+        sessionStorage.removeItem(USER_NAME_SESSION_ATTRIBUTE_PASSWORD);
+        sessionStorage.removeItem(USER_NAME_SESSION_ATTRIBUTE_ROLE);
     }
 
     isUserLoggedIn() {

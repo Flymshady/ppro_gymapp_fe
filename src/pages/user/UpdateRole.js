@@ -1,9 +1,8 @@
 import React, {Component} from 'react';
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
-import {createRoleUrl} from "../constants";
 
-class CreateRole extends Component {
+class UpdateRole extends Component {
 
     constructor(props) {
         super(props);
@@ -22,12 +21,12 @@ class CreateRole extends Component {
         });
         let json = JSON.stringify(object);
 
-        fetch(createRoleUrl, {
-            method: 'POST',
+        fetch('http://localhost:8080/roles/update/4', {
+            method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
                 'Access-Control-Allow-Credentials': true,
-                'Access-Control-Allow-Origin': 'http://localhost:3000'
+                'Access-Control-Allow-Origin': '*'
             },
             body: json
         }).then(function (response) {
@@ -63,4 +62,4 @@ class CreateRole extends Component {
     }
 }
 
-export default CreateRole;
+export default UpdateRole;
