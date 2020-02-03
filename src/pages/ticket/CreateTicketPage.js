@@ -3,6 +3,10 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import '../../styles/Forms.css'
 import {createTicketUrl, getAllClients, getTicketTypes} from '../../constants/index';
+import AuthenticationService, {
+    USER_NAME_SESSION_ATTRIBUTE_NAME,
+    USER_NAME_SESSION_ATTRIBUTE_PASSWORD
+} from "../../components/authentication/AuthenticationService";
 
 class CreateTicketPage extends Component {
 
@@ -44,7 +48,10 @@ class CreateTicketPage extends Component {
             headers: {
                 'Content-Type': 'application/json',
                 'Access-Control-Allow-Credentials': true,
-                'Access-Control-Allow-Origin': 'http://localhost:3000'
+                'Access-Control-Allow-Origin': 'http://localhost:3000',
+                'authorization' : AuthenticationService.createBasicAuthToken(sessionStorage
+                    .getItem(USER_NAME_SESSION_ATTRIBUTE_NAME), sessionStorage
+                    .getItem(USER_NAME_SESSION_ATTRIBUTE_PASSWORD))
             }
         })
             .then((response) => response.json())
@@ -58,7 +65,10 @@ class CreateTicketPage extends Component {
             headers: {
                 'Content-Type': 'application/json',
                 'Access-Control-Allow-Credentials': true,
-                'Access-Control-Allow-Origin': 'http://localhost:3000'
+                'Access-Control-Allow-Origin': 'http://localhost:3000',
+                'authorization' : AuthenticationService.createBasicAuthToken(sessionStorage
+                    .getItem(USER_NAME_SESSION_ATTRIBUTE_NAME), sessionStorage
+                    .getItem(USER_NAME_SESSION_ATTRIBUTE_PASSWORD))
             }
         })
             .then((response) => response.json())
@@ -93,6 +103,9 @@ class CreateTicketPage extends Component {
                 'Content-Type': 'application/json',
                 'Access-Control-Allow-Credentials': true,
                 'Access-Control-Allow-Origin': 'http://localhost:3000',
+                'authorization' : AuthenticationService.createBasicAuthToken(sessionStorage
+                    .getItem(USER_NAME_SESSION_ATTRIBUTE_NAME), sessionStorage
+                    .getItem(USER_NAME_SESSION_ATTRIBUTE_PASSWORD))
             },
             body: json
         }).then(function (response) {

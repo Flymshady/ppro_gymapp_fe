@@ -2,6 +2,10 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import React, {Component} from "react";
 import {updateEntranceUrl} from "../../constants";
+import AuthenticationService, {
+    USER_NAME_SESSION_ATTRIBUTE_NAME,
+    USER_NAME_SESSION_ATTRIBUTE_PASSWORD
+} from "../../components/authentication/AuthenticationService";
 
 class UpdateTicketEntrancePage extends Component {
 
@@ -44,7 +48,10 @@ class UpdateTicketEntrancePage extends Component {
             headers: {
                 'Content-Type': 'application/json',
                 'Access-Control-Allow-Credentials': true,
-                'Access-Control-Allow-Origin': '*'
+                'Access-Control-Allow-Origin': '*',
+                'authorization' : AuthenticationService.createBasicAuthToken(sessionStorage
+                    .getItem(USER_NAME_SESSION_ATTRIBUTE_NAME), sessionStorage
+                    .getItem(USER_NAME_SESSION_ATTRIBUTE_PASSWORD))
             },
             body: json
         }).then(function (response) {

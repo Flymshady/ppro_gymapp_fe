@@ -3,8 +3,8 @@ import TicketsData from '../../components/tickets/TicketsData';
 import {getTicketsByAccountUrl, getTicketsUrl} from '../../constants';
 import '../../styles/Table.css'
 import Loader from "react-loader-spinner";
-import {
-    USER_NAME_SESSION_ATTRIBUTE_ID,
+import AuthenticationService, {
+    USER_NAME_SESSION_ATTRIBUTE_ID, USER_NAME_SESSION_ATTRIBUTE_NAME, USER_NAME_SESSION_ATTRIBUTE_PASSWORD,
     USER_NAME_SESSION_ATTRIBUTE_ROLE
 } from "../../components/authentication/AuthenticationService";
 import {Button} from "react-bootstrap";
@@ -36,7 +36,10 @@ class TicketPage extends Component {
                 headers: {
                     'Content-Type': 'application/json',
                     'Access-Control-Allow-Credentials': true,
-                    'Access-Control-Allow-Origin': '*'
+                    'Access-Control-Allow-Origin': '*',
+                    'authorization' : AuthenticationService.createBasicAuthToken(sessionStorage
+                        .getItem(USER_NAME_SESSION_ATTRIBUTE_NAME), sessionStorage
+                        .getItem(USER_NAME_SESSION_ATTRIBUTE_PASSWORD))
                 }
             })
                 .then((response) => response.json())
@@ -52,7 +55,10 @@ class TicketPage extends Component {
                 headers: {
                     'Content-Type': 'application/json',
                     'Access-Control-Allow-Credentials': true,
-                    'Access-Control-Allow-Origin': '*'
+                    'Access-Control-Allow-Origin': '*',
+                    'authorization' : AuthenticationService.createBasicAuthToken(sessionStorage
+                        .getItem(USER_NAME_SESSION_ATTRIBUTE_NAME), sessionStorage
+                        .getItem(USER_NAME_SESSION_ATTRIBUTE_PASSWORD))
                 }
             })
                 .then((response) => response.json())
